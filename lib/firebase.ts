@@ -2,13 +2,12 @@ import { initializeApp, getApps, type FirebaseApp } from 'firebase/app'
 import { getAuth, type Auth } from 'firebase/auth'
 
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+  apiKey: "AIzaSyD4aN6sNxuY91OpCzRhIslvCXYWSKJ5PNM",
+  authDomain: "planning-with-ai-67a76.firebaseapp.com",
+  projectId: "planning-with-ai-67a76",
+  storageBucket: "planning-with-ai-67a76.firebasestorage.app",
+  messagingSenderId: "250873437317",
+  appId: "1:250873437317:web:276c5df31d26b399495dec"
 }
 
 // Singleton — prevents "Firebase App already exists" on Next.js hot-reload.
