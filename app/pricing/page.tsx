@@ -7,6 +7,7 @@ import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import { FEATURES, PLAN_PRICE } from '@/lib/utils'
 import { apiClient } from '@/lib/api'
+import { getCashfree } from '@/lib/cashfree'
 import { useAuth } from '@/hooks/useAuth'
 import toast from 'react-hot-toast'
 
@@ -18,15 +19,28 @@ export default function PublicPricingPage() {
     if (planId === 'free' || planId === currentPlan) return
     setLoadingPlan(planId)
     try {
-      await apiClient.createOrder({ plan_id: planId })
-      // Hand off the order response to your payment gateway's checkout SDK
-      // here, then call apiClient.verifyPayment() on success.
-      toast.success('Order created — continue in the payment window')
+      const res = await apiClient.createOrder({
+        plan_id: planId,
+        idempotency_key: crypto.randomUUID(),
+      })
+      const paymentSessionId = res.data.payment_session_id
+      if (!paymentSessionId) {
+        toast.error('Payment session could not be created')
+        return
+      }
+      const cashfree = await getCashfree()
+      // Hosted Checkout: redirectTarget "_self" sends the user to
+      // Cashfree's payment page in the current tab. Cashfree redirects back
+      // to the return_url the BACKEND configured (settings.FRONTEND_URL +
+      // /dashboard/subscription?order_id=...&order_status=...) — the
+      // Subscription page itself handles verification, see its useEffect.
+      cashfree.checkout({ paymentSessionId, redirectTarget: '_self' })
     } catch (err: any) {
       toast.error(err?.message || 'Could not start checkout')
-    } finally {
       setLoadingPlan(null)
     }
+    // No `finally` reset here — a successful call navigates away from this
+    // page entirely, so there's nothing left to un-load.
   }
 
   return (
