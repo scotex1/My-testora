@@ -96,8 +96,16 @@ export const apiClient = {
   // Firebase record — only investment_amount needs to be sent.
   getInvestmentAdvice: (d: { investment_amount: number }) => api.post('/engines/investment-advisory', d),
 
-  // Payment
-  createOrder: (d: { plan_id: string; idempotency_key?: string }) => api.post('/payment/create-order', d),
+  // Payment — Cashfree Orders API (Hosted Checkout, manual renewal).
+  // Backend constructs return_url itself from settings.FRONTEND_URL — do
+  // NOT send return_url from the client, it's ignored. Cashfree redirects
+  // to {FRONTEND_URL}/dashboard/subscription?order_id=...&order_status=...
+  // (backend must NOT include a .html suffix there — Next.js uses clean routes).
+  createOrder: (d: { plan_id: string; idempotency_key: string }) => api.post('/payment/create-order', d),
+  // Response: { success, message, plan_id?, plan_name?, expiry_date?, amount? }
+  // on PAID, or { success: false, status: 'PENDING'|'FAILED', message } otherwise.
+  // This returns HTTP 200 in both cases — always check res.data.success,
+  // never rely on the request throwing.
   verifyPayment: (d: { order_id: string }) => api.post('/payment/verify', d),
   getPaymentHistory: () => api.get('/payment/history'),
 }
