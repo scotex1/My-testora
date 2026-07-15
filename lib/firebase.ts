@@ -2,13 +2,14 @@ import { initializeApp, getApps, type FirebaseApp } from 'firebase/app'
 import { getAuth, type Auth } from 'firebase/auth'
 
 const firebaseConfig = {
-  apiKey: "AIzaSyD4aN6sNxuY91OpCzRhIslvCXYWSKJ5PNM",
-  authDomain: "planning-with-ai-67a76.firebaseapp.com",
-  projectId: "planning-with-ai-67a76",
-  storageBucket: "planning-with-ai-67a76.firebasestorage.app",
-  messagingSenderId: "250873437317",
-  appId: "1:250873437317:web:276c5df31d26b399495dec"
-}
+  apiKey: "AIzaSyBsAEpp3hooCCHYEdmTNqTId9aWK0a69Ms",
+  authDomain: "ai-vit-52666.firebaseapp.com",
+  projectId: "ai-vit-52666",
+  storageBucket: "ai-vit-52666.firebasestorage.app",
+  messagingSenderId: "137839510307",
+  appId: "1:137839510307:web:c8f56f623c8234b4638296",
+  measurementId: "G-CDTY9LJLC7"
+};
 
 // Singleton — prevents "Firebase App already exists" on Next.js hot-reload.
 function getFirebaseApp(): FirebaseApp {
